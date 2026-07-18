@@ -26,10 +26,10 @@ export default function OAuthButton() {
         type="button"
         onClick={handleGoogleLogin}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-neutral-300 rounded-lg text-neutral-700 font-medium hover:bg-neutral-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 h-10 px-4 border border-[--border-default] rounded-lg bg-[--bg-card] text-sm font-medium text-[--text-body] hover:bg-[--bg-card-hover] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
-          <svg className="animate-spin h-5 w-5 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-5 h-5 text-[--text-secondary]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -43,7 +43,7 @@ export default function OAuthButton() {
         )}
         {loading ? 'Signing in...' : 'Continue with Google'}
       </button>
-      {error && <p className="mt-2 text-sm text-red-600 text-center">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-500 text-center">{error}</p>}
     </div>
   )
 }

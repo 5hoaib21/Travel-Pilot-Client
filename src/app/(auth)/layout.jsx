@@ -16,8 +16,12 @@ export default function AuthLayout({ children }) {
 
   if (isPending) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
-        <div className="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[--bg-page]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="skeleton w-48 h-5" />
+          <div className="skeleton w-64 h-10" />
+          <div className="skeleton w-full max-w-sm h-40" />
+        </div>
       </div>
     )
   }
@@ -25,10 +29,14 @@ export default function AuthLayout({ children }) {
   if (session) return null
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[--bg-page] flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-neutral-900">Travel Pilot</h1>
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 mb-4">
+            <span className="text-white font-bold text-lg font-heading">TP</span>
+          </div>
+          <h1 className="text-2xl font-heading font-bold text-[--text-heading]">Travel Pilot</h1>
+          <p className="text-sm text-[--text-secondary] mt-1">Plan smarter. Travel better.</p>
         </div>
         {children}
       </div>

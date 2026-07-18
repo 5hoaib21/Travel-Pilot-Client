@@ -49,13 +49,13 @@ export default function SignUpForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {generalError && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm dark:bg-red-950 dark:border-red-800 dark:text-red-300">
           {generalError}
         </div>
       )}
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-1">
+        <label htmlFor="name" className="block text-sm font-medium text-[--text-heading] mb-1">
           Full Name
         </label>
         <input
@@ -63,16 +63,16 @@ export default function SignUpForm() {
           type="text"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.name ? 'border-red-300' : 'border-neutral-300'
+          className={`w-full h-10 px-3 rounded-lg border text-sm bg-[--bg-card] text-[--text-body] placeholder:text-[--text-placeholder] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors ${
+            errors.name ? 'border-red-400 ring-2 ring-red-100 dark:ring-red-900' : 'border-[--border-default]'
           }`}
           placeholder="John Doe"
         />
-        {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
+        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium text-[--text-heading] mb-1">
           Email
         </label>
         <input
@@ -80,16 +80,16 @@ export default function SignUpForm() {
           type="email"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.email ? 'border-red-300' : 'border-neutral-300'
+          className={`w-full h-10 px-3 rounded-lg border text-sm bg-[--bg-card] text-[--text-body] placeholder:text-[--text-placeholder] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors ${
+            errors.email ? 'border-red-400 ring-2 ring-red-100 dark:ring-red-900' : 'border-[--border-default]'
           }`}
           placeholder="you@example.com"
         />
-        {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+        {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium text-[--text-heading] mb-1">
           Password
         </label>
         <input
@@ -97,16 +97,16 @@ export default function SignUpForm() {
           type="password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.password ? 'border-red-300' : 'border-neutral-300'
+          className={`w-full h-10 px-3 rounded-lg border text-sm bg-[--bg-card] text-[--text-body] placeholder:text-[--text-placeholder] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors ${
+            errors.password ? 'border-red-400 ring-2 ring-red-100 dark:ring-red-900' : 'border-[--border-default]'
           }`}
           placeholder="At least 8 characters"
         />
-        {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
+        {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-700 mb-1">
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-[--text-heading] mb-1">
           Confirm Password
         </label>
         <input
@@ -114,21 +114,21 @@ export default function SignUpForm() {
           type="password"
           value={form.confirmPassword}
           onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-          className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.confirmPassword ? 'border-red-300' : 'border-neutral-300'
+          className={`w-full h-10 px-3 rounded-lg border text-sm bg-[--bg-card] text-[--text-body] placeholder:text-[--text-placeholder] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors ${
+            errors.confirmPassword ? 'border-red-400 ring-2 ring-red-100 dark:ring-red-900' : 'border-[--border-default]'
           }`}
           placeholder="Repeat your password"
         />
-        {errors.confirmPassword && <p className="mt-1 text-xs text-red-600">{errors.confirmPassword}</p>}
+        {errors.confirmPassword && <p className="mt-1 text-xs text-red-500">{errors.confirmPassword}</p>}
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 px-4 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full inline-flex items-center justify-center gap-2 h-10 px-5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
       >
         {loading && (
-          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -138,10 +138,10 @@ export default function SignUpForm() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-neutral-300" />
+          <div className="w-full border-t border-[--border-default]" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-neutral-500">or</span>
+          <span className="px-2 bg-[--bg-card] text-[--text-secondary]">or</span>
         </div>
       </div>
 
