@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MessageSquare } from 'lucide-react'
 import { useConversations } from '@/hooks/useConversations'
 import ConversationHistory from '@/components/conversation/ConversationHistory'
 import ConversationDetail from '@/components/conversation/ConversationDetail'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import { ListSkeleton } from '@/components/common/LoadingSkeleton'
+import EmptyState from '@/components/common/EmptyState'
 
 export default function ConversationsPage() {
   const { conversations, loading, search, setSearch, deleteConversation } = useConversations()
@@ -35,26 +36,13 @@ export default function ConversationsPage() {
       </motion.div>
 
       {loading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="skeleton h-20 rounded-xl" />
-          ))}
-        </div>
+        <ListSkeleton rows={3} />
       ) : conversations.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center py-16 bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 shadow-sm"
-        >
-          <div className="w-16 h-16 rounded-full bg-sky-50 dark:bg-sky-950 flex items-center justify-center mx-auto mb-4">
-            <MessageSquare className="w-8 h-8 text-sky-500" strokeWidth={1.5} />
-          </div>
-          <h2 className="text-xl font-heading font-bold text-[--text-heading] mb-2">No conversations yet</h2>
-          <p className="text-sm text-[--text-secondary] max-w-sm mx-auto">
-            Open the copilot on a trip to start chatting and refine your itinerary.
-          </p>
-        </motion.div>
+        <EmptyState
+          icon="conversations"
+          title="No conversations yet"
+          description="Open the copilot on a trip to start chatting and refine your itinerary."
+        />
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}

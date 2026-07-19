@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { AlertCircle, ChevronDown, ChevronRight, BarChart3 } from 'lucide-react'
+import { AlertCircle, ChevronDown, ChevronRight } from 'lucide-react'
 import { RequestsOverTime, SuccessRatePie, AvgResponseTimeChart, TopUsersChart } from '@/components/admin/AdminAICharts'
+import { ChartSkeleton, TableSkeleton } from '@/components/common/LoadingSkeleton'
 
 const FEATURE_TYPES = ['', 'planner', 'budgeter', 'curator', 'reviewer', 'copilot', 'enrich_destination', 'autosuggest']
 const STATUS_OPTIONS = ['', 'success', 'failed']
@@ -53,7 +54,7 @@ export default function AdminAIMonitorPage() {
 
         {chartsLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            {Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-64 rounded-xl skeleton" />)}
+            {Array.from({ length: 4 }).map((_, i) => <ChartSkeleton key={i} className="h-64" />)}
           </div>
         ) : chartData ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">

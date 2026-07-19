@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Users, MapIcon, Cpu, AlertTriangle, Activity, Calendar } from 'lucide-react'
+import { SkeletonBox } from '@/components/common/LoadingSkeleton'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
@@ -31,7 +32,7 @@ export default function AdminDashboard() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-28 rounded-xl skeleton" />
+              <SkeletonBox key={i} className="h-28" />
             ))}
           </div>
         ) : stats ? (

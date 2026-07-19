@@ -5,10 +5,8 @@ import { useDashboard } from '@/hooks/useDashboard'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { PlusCircle, Luggage, Heart, MessageSquareText, BarChart3, ArrowRight } from 'lucide-react'
-
-function SkeletonCard() {
-  return <div className="skeleton h-24 rounded-xl" />
-}
+import { SkeletonBox } from '@/components/common/LoadingSkeleton'
+import EmptyState from '@/components/common/EmptyState'
 
 export default function DashboardPage() {
   const { data: session } = useSession()
@@ -39,7 +37,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {loading
-          ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+          ? Array.from({ length: 3 }).map((_, i) => <SkeletonBox key={i} className="h-24" />)
           : summaryCards.map((card, index) => (
               <motion.div
                 key={card.label}

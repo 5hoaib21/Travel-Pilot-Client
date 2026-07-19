@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Search, ChevronLeft, ChevronRight, Ban, ExternalLink } from 'lucide-react'
+import { TableSkeleton } from '@/components/common/LoadingSkeleton'
 
 const SORTABLE = ['name', 'email', 'role', 'createdAt']
 
@@ -80,9 +81,7 @@ export default function AdminUsersPage() {
         </div>
 
         {loading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-12 rounded-lg skeleton" />)}
-          </div>
+          <TableSkeleton rows={8} cols={5} />
         ) : users.length > 0 ? (
           <>
             <div className="bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 overflow-hidden">

@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ExploreFilters from '@/components/explore/ExploreFilters'
 import ExploreResultCard from '@/components/explore/ExploreResultCard'
-import { Loader2, Compass, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { TripCardSkeleton } from '@/components/common/LoadingSkeleton'
 
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
@@ -12,19 +13,6 @@ const sortOptions = [
   { label: 'Budget (high-low)', value: 'budget_desc' },
   { label: 'Duration', value: 'duration' },
 ]
-
-function SkeletonCard() {
-  return (
-    <div className="rounded-xl border border-warm-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden">
-      <div className="h-32 skeleton" />
-      <div className="p-4 space-y-2">
-        <div className="h-4 w-3/4 skeleton" />
-        <div className="h-3 w-1/2 skeleton" />
-        <div className="h-3 w-full skeleton" />
-      </div>
-    </div>
-  )
-}
 
 function ExploreContent() {
   const router = useRouter()
@@ -105,7 +93,7 @@ function ExploreContent() {
 
         {loading ? (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+            {Array.from({ length: 6 }).map((_, i) => <TripCardSkeleton key={i} />)}
           </div>
         ) : data?.trips?.length > 0 ? (
           <>
@@ -175,21 +163,12 @@ export default function ExplorePage() {
       <div className="min-h-screen bg-[--bg-page]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="mb-6">
-            <div className="h-8 w-48 skeleton" />
-            <div className="h-4 w-72 skeleton mt-2" />
+            <div className="h-8 w-48 skeleton rounded-md" />
+            <div className="h-4 w-72 skeleton rounded-md mt-2" />
           </div>
-          <div className="h-14 rounded-xl skeleton mb-4" />
+          <div className="h-14 skeleton rounded-xl mb-4" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-xl border border-warm-200 overflow-hidden">
-                <div className="h-32 skeleton" />
-                <div className="p-4 space-y-2">
-                  <div className="h-4 w-3/4 skeleton" />
-                  <div className="h-3 w-1/2 skeleton" />
-                  <div className="h-3 w-full skeleton" />
-                </div>
-              </div>
-            ))}
+            {Array.from({ length: 6 }).map((_, i) => <TripCardSkeleton key={i} />)}
           </div>
         </div>
       </div>

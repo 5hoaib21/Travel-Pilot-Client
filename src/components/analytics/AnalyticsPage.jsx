@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { BarChart3 } from 'lucide-react'
 import MonthlyTripsChart from './MonthlyTripsChart'
 import DurationDistributionChart from './DurationDistributionChart'
 import TravelStyleChart from './TravelStyleChart'
 import AIUsageChart from './AIUsageChart'
+import { ChartSkeleton } from '@/components/common/LoadingSkeleton'
+import EmptyState from '@/components/common/EmptyState'
 
 export default function AnalyticsPage() {
   const [data, setData] = useState(null)
@@ -29,13 +30,13 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        <div className="skeleton h-8 w-48" />
+      <div className="space-y-6">
+        <div className="skeleton h-8 w-48 rounded-md" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="skeleton h-72 rounded-xl" />
-          <div className="skeleton h-72 rounded-xl" />
-          <div className="skeleton h-72 rounded-xl" />
-          <div className="skeleton h-72 rounded-xl" />
+          <ChartSkeleton />
+          <ChartSkeleton />
+          <ChartSkeleton />
+          <ChartSkeleton />
         </div>
       </div>
     )
@@ -43,15 +44,11 @@ export default function AnalyticsPage() {
 
   if (!data || (!data.monthlyTrips?.length && !data.aiUsage?.length)) {
     return (
-      <div className="text-center py-16">
-        <div className="w-16 h-16 rounded-full bg-orange-50 dark:bg-orange-950 flex items-center justify-center mx-auto mb-4">
-          <BarChart3 className="w-8 h-8 text-orange-500" strokeWidth={1.5} />
-        </div>
-        <h2 className="text-xl font-heading font-bold text-[--text-heading] mb-2">No data yet</h2>
-        <p className="text-sm text-[--text-secondary] max-w-sm mx-auto">
-          Create your first trip to see analytics and insights here.
-        </p>
-      </div>
+      <EmptyState
+        icon="analytics"
+        title="No data yet"
+        description="Create your first trip to see analytics and insights here."
+      />
     )
   }
 

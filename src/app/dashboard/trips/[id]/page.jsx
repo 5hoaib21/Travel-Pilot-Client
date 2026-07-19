@@ -11,6 +11,7 @@ import BudgetChart from '@/components/trip/BudgetChart'
 import TravelTips from '@/components/trip/TravelTips'
 import CopilotPanel from '@/components/copilot/CopilotPanel'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import { DayTimelineSkeleton } from '@/components/common/LoadingSkeleton'
 import { useRouter } from 'next/navigation'
 
 export default function TripDetailPage({ params }) {
@@ -87,10 +88,10 @@ export default function TripDetailPage({ params }) {
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        <div className="skeleton h-8 w-64" />
-        <div className="skeleton h-48 w-full" />
-        <div className="skeleton h-32 w-full" />
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="skeleton h-8 w-64 rounded-md" />
+        <div className="skeleton h-6 w-48 rounded-md" />
+        <DayTimelineSkeleton />
       </div>
     )
   }

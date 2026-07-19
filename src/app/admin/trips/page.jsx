@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Search, ChevronLeft, ChevronRight, Trash2, Download, AlertCircle } from 'lucide-react'
+import { TableSkeleton } from '@/components/common/LoadingSkeleton'
 
 export default function AdminTripsPage() {
   const [trips, setTrips] = useState([])
@@ -95,7 +96,7 @@ export default function AdminTripsPage() {
         </div>
 
         {loading ? (
-          <div className="space-y-3">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-12 rounded-lg skeleton" />)}</div>
+          <TableSkeleton rows={8} cols={6} />
         ) : trips.length > 0 ? (
           <>
             <div className="bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 overflow-hidden">

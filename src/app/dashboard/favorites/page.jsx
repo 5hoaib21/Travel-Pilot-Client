@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { Heart, PlusCircle, Luggage } from 'lucide-react'
 import TripGrid from '@/components/trip/TripGrid'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import { TripCardSkeletonGrid } from '@/components/common/LoadingSkeleton'
+import EmptyState from '@/components/common/EmptyState'
 
 export default function FavoritesPage() {
   const [trips, setTrips] = useState([])
@@ -80,33 +82,15 @@ export default function FavoritesPage() {
       </motion.div>
 
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="skeleton h-64 rounded-xl" />
-          ))}
-        </div>
+        <TripCardSkeletonGrid count={3} />
       ) : trips.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center py-16 bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 shadow-sm"
-        >
-          <div className="w-16 h-16 rounded-full bg-red-50 dark:bg-red-950 flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-red-400" strokeWidth={1.5} />
-          </div>
-          <h2 className="text-xl font-heading font-bold text-[--text-heading] mb-2">No favorites yet</h2>
-          <p className="text-sm text-[--text-secondary] mb-6 max-w-sm mx-auto">
-            Save your favorite trips by tapping the heart icon on any trip card.
-          </p>
-          <Link
-            href="/dashboard/trips"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-sm"
-          >
-            <Luggage className="w-4 h-4" strokeWidth={1.5} />
-            Browse Trips
-          </Link>
-        </motion.div>
+        <EmptyState
+          icon="favorites"
+          title="No favorites yet"
+          description="Save your favorite trips by tapping the heart icon on any trip card."
+          actionLabel="Browse Trips"
+          actionHref="/dashboard/trips"
+        />
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
