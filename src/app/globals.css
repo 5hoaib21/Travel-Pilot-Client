@@ -98,6 +98,34 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 200% 0; }
 }
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print\\:block,
+  .print\\:block * {
+    visibility: visible;
+  }
+  .print\\:hidden,
+  .print\\:hidden * {
+    display: none !important;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print\\:py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  nav, button, .fixed, .skeleton, .copilot-panel {
+    display: none !important;
+  }
+  @page {
+    margin: 2cm;
+  }
+}
+
 .skeleton {
   background: linear-gradient(
     90deg,

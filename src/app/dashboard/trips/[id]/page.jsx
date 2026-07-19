@@ -3,7 +3,7 @@
 import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, RefreshCw, Trash2, Heart, MessageCircle } from 'lucide-react'
+import { ArrowLeft, RefreshCw, Trash2, Heart, MessageCircle, Share2, Download } from 'lucide-react'
 import { useTrip } from '@/hooks/useTrip'
 import DayTimeline from '@/components/trip/DayTimeline'
 import BudgetTable from '@/components/trip/BudgetTable'
@@ -21,6 +21,29 @@ export default function TripDetailPage({ params }) {
   const [deleting, setDeleting] = useState(false)
   const [favorite, setFavorite] = useState(false)
   const [copilotOpen, setCopilotOpen] = useState(false)
+  const [shareUrl, setShareUrl] = useState(null)
+  const [copyMsg, setCopyMsg] = useState('')
+
+  async function handleShare() {
+    try {
+      const res = await fetch(`/api/trips/${id}/export`, { method: 'POST' })
+      if (res.ok) {
+        const data = await res.json()
+        setShareUrl(data.shareUrl)
+        try {
+          await navigator.clipboard.writeText(data.shareUrl)
+          setCopyMsg('Link copied!')
+          setTimeout(() => setCopyMsg(''), 3000)
+        } catch {
+          setCopyMsg('Click to copy')
+        }
+      }
+    } catch {}
+  }
+
+  function handleDownloadPDF() {
+    window.print()
+  }
 
   useEffect(() => {
     if (trip) setFavorite(trip.favorite || false)
@@ -136,6 +159,21 @@ export default function TripDetailPage({ params }) {
             >
               <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
               Regenerate
+            </button>
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 h-9 px-4 text-sm font-medium text-[--text-body] border border-[--border-default] rounded-lg hover:bg-[--bg-card-hover] transition-colors"
+              title={copyMsg || 'Share trip'}
+            >
+              <Share2 className="w-4 h-4" strokeWidth={1.5} />
+              {copyMsg || 'Share'}
+            </button>
+            <button
+              onClick={handleDownloadPDF}
+              className="inline-flex items-center gap-2 h-9 px-4 text-sm font-medium text-[--text-body] border border-[--border-default] rounded-lg hover:bg-[--bg-card-hover] transition-colors print:hidden"
+            >
+              <Download className="w-4 h-4" strokeWidth={1.5} />
+              PDF
             </button>
             <button
               onClick={() => setShowDelete(true)}
