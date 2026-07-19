@@ -63,24 +63,45 @@ export async function GET(req) {
     const page = Math.max(1, parseInt(url.searchParams.get('page')) || 1)
     const limit = Math.min(50, Math.max(1, parseInt(url.searchParams.get('limit')) || 10))
     const skip = (page - 1) * limit
+    const search = url.searchParams.get('search') || ''
+    const status = url.searchParams.get('status') || ''
+    const sort = url.searchParams.get('sort') || 'newest'
+
+    const query = { userId: session.user.id }
+
+    if (status && ['completed', 'generating', 'failed'].includes(status)) {
+      query.status = status
+    }
+
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { destination: { $regex: search, $options: 'i' } },
+      ]
+    }
+
+    const sortMap = {
+      newest: { createdAt: -1 },
+      oldest: { createdAt: 1 },
+      budget_high: { budget: -1 },
+      budget_low: { budget: 1 },
+      duration: { duration: -1 },
+    }
 
     const tripsCollection = db.collection('trips')
     const [trips, total] = await Promise.all([
       tripsCollection
-        .find(
-          { userId: session.user.id },
-          {
-            sort: { createdAt: -1 },
-            skip,
-            limit,
-            projection: {
-              title: 1, destination: 1, status: 1, budget: 1, currency: 1,
-              duration: 1, travelStyle: 1, favorite: 1, createdAt: 1,
-            },
-          }
-        )
+        .find(query, {
+          sort: sortMap[sort] || sortMap.newest,
+          skip,
+          limit,
+          projection: {
+            title: 1, destination: 1, status: 1, budget: 1, currency: 1,
+            duration: 1, travelStyle: 1, favorite: 1, createdAt: 1,
+          },
+        })
         .toArray(),
-      tripsCollection.countDocuments({ userId: session.user.id }),
+      tripsCollection.countDocuments(query),
     ])
 
     return Response.json({
