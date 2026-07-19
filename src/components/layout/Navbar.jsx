@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession } from '@/hooks/useSession'
 import { authClient } from '@/lib/auth-client'
-import { Menu, X, LogOut, ChevronDown, Sun, Moon } from 'lucide-react'
+import { Menu, X, LogOut, ChevronDown, Sun, Moon, Shield } from 'lucide-react'
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -116,6 +116,16 @@ export default function Navbar() {
                       >
                         Dashboard
                       </Link>
+                      {session.user?.role === 'admin' && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Shield className="w-4 h-4" strokeWidth={1.5} />
+                          Admin Panel
+                        </Link>
+                      )}
                       <button
                         onClick={() => {
                           setUserMenuOpen(false)
@@ -218,6 +228,16 @@ export default function Navbar() {
                   >
                     Dashboard
                   </Link>
+                  {session.user?.role === 'admin' && (
+                    <Link
+                      href="/admin"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-orange-600 border border-orange-200 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-950 dark:border-orange-800 transition-colors"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <Shield className="w-4 h-4" strokeWidth={1.5} />
+                      Admin Panel
+                    </Link>
+                  )}
                   <button
                     onClick={() => {
                       setMobileOpen(false)

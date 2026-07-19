@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Users, MapIcon, Cpu, RefreshCw } from 'lucide-react'
+import { Users, MapIcon, Cpu, AlertTriangle, Activity, Calendar } from 'lucide-react'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
@@ -29,16 +29,19 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {Array.from({ length: 3 }).map((_, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-28 rounded-xl skeleton" />
             ))}
           </div>
         ) : stats ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <StatCard icon={<Users className="w-5 h-5 text-blue-500" />} label="Total Users" value={stats.totalUsers} />
             <StatCard icon={<MapIcon className="w-5 h-5 text-orange-500" />} label="Total Trips" value={stats.totalTrips} />
-            <StatCard icon={<Cpu className="w-5 h-5 text-purple-500" />} label="AI Generations" value={stats.totalGenerations} />
+            <StatCard icon={<Cpu className="w-5 h-5 text-purple-500" />} label="Total AI Requests" value={stats.totalGenerations} />
+            <StatCard icon={<AlertTriangle className="w-5 h-5 text-red-500" />} label="Failed AI Requests" value={`${stats.failedGenerations} (${stats.failedPercentage}%)`} />
+            <StatCard icon={<Activity className="w-5 h-5 text-green-500" />} label="Active Users (Month)" value={stats.activeUsers} />
+            <StatCard icon={<Calendar className="w-5 h-5 text-cyan-500" />} label="Trips Created Today" value={stats.tripsToday} />
           </div>
         ) : (
           <p className="text-sm text-[--text-secondary]">Failed to load stats.</p>
@@ -51,7 +54,7 @@ export default function AdminDashboard() {
 function StatCard({ icon, label, value }) {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 p-5 flex items-center gap-4">
-      <div className="w-10 h-10 rounded-lg bg-warm-50 dark:bg-slate-700 flex items-center justify-center">{icon}</div>
+      <div className="w-10 h-10 rounded-lg bg-warm-50 dark:bg-slate-700 flex items-center justify-center shrink-0">{icon}</div>
       <div>
         <p className="text-xs text-[--text-secondary]">{label}</p>
         <p className="text-xl font-semibold text-[--text-heading]">{value}</p>

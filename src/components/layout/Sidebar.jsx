@@ -15,9 +15,10 @@ import {
   User,
   LogOut,
   ChevronLeft,
+  Shield,
 } from 'lucide-react'
 
-const navItems = [
+const baseNavItems = [
   { label: 'Dashboard Overview', href: '/dashboard', icon: LayoutDashboard },
   { label: 'My Trips', href: '/dashboard/trips', icon: Luggage },
   { label: 'Create Trip', href: '/dashboard/new', icon: PlusCircle },
@@ -32,6 +33,9 @@ export default function Sidebar({ collapsed, onToggle }) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const user = session?.user
+  const navItems = user?.role === 'admin'
+    ? [...baseNavItems.slice(0, -1), { label: 'Admin Panel', href: '/admin', icon: Shield }, ...baseNavItems.slice(-1)]
+    : baseNavItems
 
   function isActive(href) {
     if (href === '/dashboard') return pathname === '/dashboard'

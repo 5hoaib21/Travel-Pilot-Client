@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { api } from '@/lib/api'
 
 export function useGenerateTrip() {
   const [loading, setLoading] = useState(false)
@@ -13,17 +14,7 @@ export function useGenerateTrip() {
     setTripId(null)
 
     try {
-      const res = await fetch('/api/trips/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(preferences),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to generate trip')
-      }
+      const data = await api.post('/trips/generate', preferences)
 
       setTripId(data.trip._id)
       return data.trip
