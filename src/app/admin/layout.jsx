@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { ShieldAlert, Loader2 } from 'lucide-react'
+import AdminSidebar from '@/components/admin/AdminSidebar'
 
 export default function AdminLayout({ children }) {
   const router = useRouter()
-  const pathname = usePathname()
   const [status, setStatus] = useState('loading')
 
   useEffect(() => {
@@ -55,5 +55,12 @@ export default function AdminLayout({ children }) {
     )
   }
 
-  return <>{children}</>
+  return (
+    <div className="min-h-screen bg-[--bg-page]">
+      <AdminSidebar />
+      <div className="transition-all duration-300 md:ml-60 pb-16 md:pb-0">
+        <main className="min-h-screen">{children}</main>
+      </div>
+    </div>
+  )
 }
