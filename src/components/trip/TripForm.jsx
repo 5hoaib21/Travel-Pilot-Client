@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, ChevronDown, Search } from 'lucide-react'
 import { useGenerateTrip } from '@/hooks/useGenerateTrip'
+import { useAutosuggest } from '@/hooks/useAutosuggest'
 
 const currencies = ['USD', 'INR', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'THB', 'SGD', 'MYR']
 const travelStyles = ['Relaxed', 'Balanced', 'Adventure']
@@ -44,6 +45,50 @@ export default function TripForm() {
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const { generate, loading, error: serverError, reset, tripId } = useGenerateTrip()
+  const { query, setQuery, suggestions, loading: suggestLoading } = useAutosuggest(300)
+  const [suggestOpen, setSuggestOpen] = useState(false)
+  const [suggestIndex, setSuggestIndex] = useState(-1)
+  const suggestRef = useRef(null)
+
+  useEffect(() => {
+    if (query !== form.destination) setQuery(form.destination)
+  }, [form.destination, query, setQuery])
+
+  useEffect(() => {
+    setSuggestOpen(suggestions.length > 0 && form.destination.trim().length >= 2)
+    setSuggestIndex(-1)
+  }, [suggestions, form.destination])
+
+  useEffect(() => {
+    function handleClick(e) {
+      if (suggestRef.current && !suggestRef.current.contains(e.target)) {
+        setSuggestOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  function selectSuggestion(suggestion) {
+    update('destination', suggestion)
+    setSuggestOpen(false)
+  }
+
+  function handleKeyDown(e) {
+    if (!suggestOpen) return
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setSuggestIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setSuggestIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1))
+    } else if (e.key === 'Enter' && suggestIndex >= 0) {
+      e.preventDefault()
+      selectSuggestion(suggestions[suggestIndex])
+    } else if (e.key === 'Escape') {
+      setSuggestOpen(false)
+    }
+  }
 
   useEffect(() => {
     try {
@@ -176,7 +221,7 @@ export default function TripForm() {
         </div>
       )}
 
-      <div>
+      <div ref={suggestRef}>
         <label htmlFor="destination" className="block text-sm font-medium text-[--text-heading] mb-1">
           Destination
         </label>
@@ -187,11 +232,43 @@ export default function TripForm() {
             type="text"
             value={form.destination}
             onChange={(e) => update('destination', e.target.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => { if (suggestions.length > 0) setSuggestOpen(true) }}
             placeholder="e.g. Tokyo, Japan"
+            autoComplete="off"
             className={`w-full h-10 pl-9 pr-3 rounded-lg border text-sm bg-white dark:bg-slate-800 text-[--text-body] placeholder:text-[--text-placeholder] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors ${
               errors.destination ? 'border-red-400 ring-2 ring-red-100 dark:ring-red-900' : 'border-[--border-default]'
             }`}
           />
+          {suggestLoading && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <svg className="animate-spin w-4 h-4 text-[--text-secondary]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            </div>
+          )}
+          {suggestOpen && (
+            <ul className="absolute top-full left-0 right-0 mt-1 z-50 bg-white dark:bg-slate-800 border border-warm-200 dark:border-slate-700 rounded-lg shadow-lg overflow-hidden">
+              {suggestions.map((s, i) => (
+                <li key={s}>
+                  <button
+                    type="button"
+                    onClick={() => selectSuggestion(s)}
+                    onMouseEnter={() => setSuggestIndex(i)}
+                    className={`w-full text-left px-3 py-2 text-sm transition-colors ${
+                      i === suggestIndex
+                        ? 'bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300'
+                        : 'text-[--text-body] hover:bg-warm-50 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    <Search className="inline w-3.5 h-3.5 mr-2 text-[--text-secondary]" strokeWidth={1.5} />
+                    {s}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         {errors.destination && <p className="mt-1 text-xs text-red-500">{errors.destination}</p>}
       </div>
