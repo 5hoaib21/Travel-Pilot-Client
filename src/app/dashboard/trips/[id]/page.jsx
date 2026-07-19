@@ -7,6 +7,7 @@ import { ArrowLeft, RefreshCw, Trash2, Share2 } from 'lucide-react'
 import { useTrip } from '@/hooks/useTrip'
 import DayTimeline from '@/components/trip/DayTimeline'
 import BudgetTable from '@/components/trip/BudgetTable'
+import BudgetChart from '@/components/trip/BudgetChart'
 import TravelTips from '@/components/trip/TravelTips'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
 import { useState } from 'react'
@@ -145,6 +146,15 @@ export default function TripDetailPage({ params }) {
           ))}
         </div>
       )}
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-md"
+      >
+        <BudgetChart budgetBreakdown={trip.budgetBreakdown} />
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div
