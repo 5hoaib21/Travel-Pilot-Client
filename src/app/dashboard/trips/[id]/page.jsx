@@ -3,12 +3,13 @@
 import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, RefreshCw, Trash2, Heart } from 'lucide-react'
+import { ArrowLeft, RefreshCw, Trash2, Heart, MessageCircle } from 'lucide-react'
 import { useTrip } from '@/hooks/useTrip'
 import DayTimeline from '@/components/trip/DayTimeline'
 import BudgetTable from '@/components/trip/BudgetTable'
 import BudgetChart from '@/components/trip/BudgetChart'
 import TravelTips from '@/components/trip/TravelTips'
+import CopilotPanel from '@/components/copilot/CopilotPanel'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
 import { useRouter } from 'next/navigation'
 
@@ -19,6 +20,7 @@ export default function TripDetailPage({ params }) {
   const [showDelete, setShowDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [favorite, setFavorite] = useState(false)
+  const [copilotOpen, setCopilotOpen] = useState(false)
 
   useEffect(() => {
     if (trip) setFavorite(trip.favorite || false)
@@ -211,6 +213,21 @@ export default function TripDetailPage({ params }) {
           onCancel={() => setShowDelete(false)}
         />
       )}
+
+      <button
+        onClick={() => setCopilotOpen(true)}
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-orange-500 text-white shadow-lg flex items-center justify-center hover:bg-orange-600 transition-colors z-40"
+        aria-label="Open Travel Copilot"
+      >
+        <MessageCircle className="w-5 h-5" strokeWidth={1.5} />
+      </button>
+
+      <CopilotPanel
+        tripId={id}
+        isOpen={copilotOpen}
+        onClose={() => setCopilotOpen(false)}
+        onTripUpdated={() => router.refresh()}
+      />
     </div>
   )
 }
