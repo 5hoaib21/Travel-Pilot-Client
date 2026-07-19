@@ -1,16 +1,15 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, RefreshCw, Trash2, Share2 } from 'lucide-react'
+import { ArrowLeft, RefreshCw, Trash2, Heart } from 'lucide-react'
 import { useTrip } from '@/hooks/useTrip'
 import DayTimeline from '@/components/trip/DayTimeline'
 import BudgetTable from '@/components/trip/BudgetTable'
 import BudgetChart from '@/components/trip/BudgetChart'
 import TravelTips from '@/components/trip/TravelTips'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function TripDetailPage({ params }) {
@@ -19,6 +18,25 @@ export default function TripDetailPage({ params }) {
   const { data: trip, loading, error } = useTrip(id)
   const [showDelete, setShowDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [favorite, setFavorite] = useState(false)
+
+  useEffect(() => {
+    if (trip) setFavorite(trip.favorite || false)
+  }, [trip])
+
+  async function handleFavoriteToggle() {
+    const next = !favorite
+    setFavorite(next)
+    try {
+      await fetch(`/api/trips/${id}/favorite`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ favorite: next }),
+      })
+    } catch {
+      setFavorite(!next)
+    }
+  }
 
   async function handleDelete() {
     setDeleting(true)
@@ -100,6 +118,16 @@ export default function TripDetailPage({ params }) {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={handleFavoriteToggle}
+              className="inline-flex items-center justify-center h-9 w-9 text-[--text-secondary] border border-[--border-default] rounded-lg hover:bg-[--bg-card-hover] transition-colors"
+              aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              <Heart
+                className={`w-4 h-4 ${favorite ? 'fill-red-400 text-red-400' : ''}`}
+                strokeWidth={1.5}
+              />
+            </button>
             <button
               onClick={handleRegenerate}
               className="inline-flex items-center gap-2 h-9 px-4 text-sm font-medium text-orange-600 border border-orange-200 rounded-lg hover:bg-orange-50 dark:text-orange-400 dark:border-orange-800 dark:hover:bg-orange-950 transition-colors"
