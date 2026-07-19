@@ -1,4 +1,5 @@
 import './globals.css';
+import Providers from '@/components/common/Providers'
 
 export const metadata = {
   title: 'Travel Pilot — Your AI Travel Planner',
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="bg-[--bg-page] text-[--text-body]">{children}</body>
+      <body className="bg-[--bg-page] text-[--text-body]">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

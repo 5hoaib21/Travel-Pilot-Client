@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from '@/hooks/useSession'
 import DashboardLayout from '@/components/layout/DashboardLayout'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
 
 export default function DashboardRootLayout({ children }) {
   const router = useRouter()
@@ -29,5 +30,9 @@ export default function DashboardRootLayout({ children }) {
 
   if (!session) return null
 
-  return <DashboardLayout>{children}</DashboardLayout>
+  return (
+    <ErrorBoundary>
+      <DashboardLayout>{children}</DashboardLayout>
+    </ErrorBoundary>
+  )
 }

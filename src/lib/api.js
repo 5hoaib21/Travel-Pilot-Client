@@ -1,5 +1,11 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api'
 
+function showToast(message, type = 'info', duration = 4000) {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('api:toast', { detail: { message, type, duration } }))
+  }
+}
+
 class ApiError extends Error {
   constructor(message, status, code, details) {
     super(message)
@@ -13,14 +19,28 @@ class ApiError extends Error {
 async function request(path, options = {}) {
   const url = `${BASE_URL}${path}`
   const { headers: extraHeaders, ...rest } = options
-  const res = await fetch(url, {
-    ...rest,
-    headers: { 'Content-Type': 'application/json', ...extraHeaders },
-  })
+
+  let res
+  try {
+    res = await fetch(url, {
+      ...rest,
+      headers: { 'Content-Type': 'application/json', ...extraHeaders },
+    })
+  } catch (err) {
+    showToast('Network error. Check your connection.', 'network')
+    throw new ApiError('Network error. Check your connection.', 0, 'NETWORK_ERROR')
+  }
 
   const data = await res.json().catch(() => null)
 
   if (!res.ok) {
+    if (res.status === 401) {
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login'
+      }
+    } else if (res.status === 429) {
+      showToast('Too many requests. Please wait.', 'warning')
+    }
     throw new ApiError(
       data?.error || `Request failed with status ${res.status}`,
       res.status,
@@ -47,4 +67,4 @@ const api = {
   },
 }
 
-export { api, ApiError }
+export { api, ApiError, showToast }

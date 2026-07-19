@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ShieldAlert, Loader2 } from 'lucide-react'
 import AdminSidebar from '@/components/admin/AdminSidebar'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
 
 export default function AdminLayout({ children }) {
   const router = useRouter()
@@ -59,7 +60,9 @@ export default function AdminLayout({ children }) {
     <div className="min-h-screen bg-[--bg-page]">
       <AdminSidebar />
       <div className="transition-all duration-300 md:ml-60 pb-16 md:pb-0">
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen">
+          <ErrorBoundary>{children}</ErrorBoundary>
+        </main>
       </div>
     </div>
   )

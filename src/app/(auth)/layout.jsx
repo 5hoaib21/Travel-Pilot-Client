@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useSession } from '@/hooks/useSession'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
 
 export default function AuthLayout({ children }) {
   const router = useRouter()
@@ -38,7 +39,7 @@ export default function AuthLayout({ children }) {
           <h1 className="text-2xl font-heading font-bold text-[--text-heading]">Travel Pilot</h1>
           <p className="text-sm text-[--text-secondary] mt-1">Plan smarter. Travel better.</p>
         </div>
-        {children}
+        <ErrorBoundary>{children}</ErrorBoundary>
       </div>
     </div>
   )
