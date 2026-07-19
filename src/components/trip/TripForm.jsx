@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, ChevronDown, Search } from 'lucide-react'
+import { useGenerateTrip } from '@/hooks/useGenerateTrip'
 
 const currencies = ['USD', 'INR', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'THB', 'SGD', 'MYR']
 const travelStyles = ['Relaxed', 'Balanced', 'Adventure']
@@ -42,8 +43,7 @@ export default function TripForm() {
   const router = useRouter()
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [serverError, setServerError] = useState(null)
+  const { generate, loading, error: serverError, reset, tripId } = useGenerateTrip()
 
   useEffect(() => {
     try {
@@ -54,6 +54,13 @@ export default function TripForm() {
       }
     } catch {}
   }, [])
+
+  useEffect(() => {
+    if (tripId) {
+      localStorage.removeItem(STORAGE_KEY)
+      router.push(`/dashboard/trips/${tripId}`)
+    }
+  }, [tripId, router])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -89,40 +96,23 @@ export default function TripForm() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setServerError(null)
+    reset()
     const errs = validate(form)
     setErrors(errs)
     if (Object.keys(errs).length > 0) return
 
-    setLoading(true)
     try {
-      const res = await fetch('/api/trips/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          destination: form.destination,
-          budget: Number(form.budget),
-          currency: form.currency,
-          duration: Number(form.duration),
-          travelStyle: form.travelStyle,
-          interests: form.interests,
-          companion: form.companion,
-          additionalNotes: form.additionalNotes || undefined,
-        }),
+      await generate({
+        destination: form.destination,
+        budget: Number(form.budget),
+        currency: form.currency,
+        duration: Number(form.duration),
+        travelStyle: form.travelStyle,
+        interests: form.interests,
+        companion: form.companion,
+        additionalNotes: form.additionalNotes || undefined,
       })
-
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Failed to generate trip')
-      }
-
-      const data = await res.json()
-      localStorage.removeItem(STORAGE_KEY)
-      router.push(`/dashboard/trips/${data.trip._id}`)
-    } catch (err) {
-      setServerError(err.message)
-      setLoading(false)
-    }
+    } catch {}
   }
 
   function SelectField({ label, fieldKey, value, options, placeholder }) {
