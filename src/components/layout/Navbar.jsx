@@ -159,7 +159,7 @@ export default function Navbar() {
           </div>
 
           <button
-            className="md:hidden p-2 rounded-lg text-[--text-body] hover:bg-[--bg-card-hover] transition-colors"
+            className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[--text-body] hover:bg-[--bg-card-hover] transition-colors"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >

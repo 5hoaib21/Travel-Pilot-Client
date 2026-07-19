@@ -72,7 +72,7 @@ export default function AdminSidebar() {
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-1.5 rounded-lg text-[--text-secondary] hover:bg-[--bg-card-hover] transition-colors"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[--text-secondary] hover:bg-[--bg-card-hover] transition-colors"
                 aria-label="Close admin menu"
               >
                 <X className="w-4 h-4" strokeWidth={1.5} />

@@ -85,6 +85,7 @@ export default function AdminUsersPage() {
         ) : users.length > 0 ? (
           <>
             <div className="bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 overflow-hidden">
+              <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-warm-200 dark:border-slate-700 bg-warm-50 dark:bg-slate-900">
@@ -146,6 +147,7 @@ export default function AdminUsersPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
 
             {totalPages > 1 && (

@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
         <header className="sticky top-0 z-20 h-16 bg-[--bg-glass] backdrop-blur-xl border-b border-[--border-default] flex items-center px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="md:hidden p-2 rounded-lg text-[--text-body] hover:bg-[--bg-card-hover] transition-colors mr-3"
+            className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[--text-body] hover:bg-[--bg-card-hover] transition-colors mr-3"
             aria-label="Toggle sidebar"
           >
             <Menu className="w-5 h-5" strokeWidth={1.5} />

@@ -25,7 +25,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="w-9 h-9 rounded-lg flex items-center justify-center text-[--text-secondary] hover:bg-[--bg-card-hover] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="min-w-[44px] min-h-[44px] md:w-9 md:h-9 rounded-lg flex items-center justify-center text-[--text-secondary] hover:bg-[--bg-card-hover] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
@@ -33,14 +33,14 @@ export default function Pagination({ page, totalPages, onPageChange }) {
 
       {getPages().map((p, i) =>
         p === '...' ? (
-          <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center text-xs text-[--text-secondary]">
+          <span key={`ellipsis-${i}`} className="min-w-[44px] min-h-[44px] md:w-9 md:h-9 flex items-center justify-center text-xs text-[--text-secondary]">
             &hellip;
           </span>
         ) : (
           <button
             key={p}
             onClick={() => onPageChange(p)}
-            className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+            className={`min-w-[44px] min-h-[44px] md:w-9 md:h-9 rounded-lg text-sm font-medium transition-colors ${
               p === page
                 ? 'bg-orange-500 text-white shadow-sm'
                 : 'text-[--text-body] hover:bg-[--bg-card-hover]'
@@ -54,7 +54,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="w-9 h-9 rounded-lg flex items-center justify-center text-[--text-secondary] hover:bg-[--bg-card-hover] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="min-w-[44px] min-h-[44px] md:w-9 md:h-9 rounded-lg flex items-center justify-center text-[--text-secondary] hover:bg-[--bg-card-hover] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Next page"
       >
         <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
