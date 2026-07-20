@@ -157,7 +157,9 @@ export default function TripForm() {
         companion: form.companion,
         additionalNotes: form.additionalNotes || undefined,
       })
-    } catch {}
+    } catch {
+      // error handled in useGenerateTrip hook
+    }
   }
 
   function SelectField({ label, fieldKey, value, options, placeholder }) {

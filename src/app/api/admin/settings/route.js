@@ -11,7 +11,7 @@ export async function GET(req) {
     return Response.json({
       settings: settings || {
         maintenanceMode: false,
-        aiModel: 'gemini-2.0-flash',
+        aiModel: 'llama-3.3-70b-versatile',
         rateLimit: 30,
         maxRetries: 2,
       },
@@ -32,7 +32,7 @@ export async function PATCH(req) {
 
     const update = {}
     if (typeof maintenanceMode === 'boolean') update.maintenanceMode = maintenanceMode
-    if (aiModel && ['gemini-2.0-flash', 'gemini-2.0-pro'].includes(aiModel)) update.aiModel = aiModel
+    if (aiModel && typeof aiModel === 'string' && aiModel.length > 0) update.aiModel = aiModel
     if (typeof rateLimit === 'number' && rateLimit > 0) update.rateLimit = rateLimit
     if (typeof maxRetries === 'number' && maxRetries >= 0) update.maxRetries = maxRetries
     update.updatedAt = new Date()

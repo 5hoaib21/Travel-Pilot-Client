@@ -39,7 +39,9 @@ export default function TripDetailPage({ params }) {
           setCopyMsg('Click to copy')
         }
       }
-    } catch {}
+    } catch {
+      // share failure — non-critical
+    }
   }
 
   function handleDownloadPDF() {
@@ -68,13 +70,17 @@ export default function TripDetailPage({ params }) {
     setDeleting(true)
     try {
       const res = await fetch(`/api/trips/${id}`, { method: 'DELETE' })
-      if (res.ok || res.status === 204) {
+      if (res.ok) {
+        setDeleting(false)
+        setShowDelete(false)
         router.push('/dashboard/trips')
+        return
       }
-    } catch {} finally {
-      setDeleting(false)
-      setShowDelete(false)
+    } catch {
+      // delete failed
     }
+    setDeleting(false)
+    setShowDelete(false)
   }
 
   async function handleRegenerate() {
@@ -83,7 +89,9 @@ export default function TripDetailPage({ params }) {
       if (res.ok) {
         router.refresh()
       }
-    } catch {}
+    } catch {
+      // regenerate failed — user can retry
+    }
   }
 
   if (loading) {
@@ -208,7 +216,9 @@ export default function TripDetailPage({ params }) {
                       body: JSON.stringify({ dayNumber }),
                     })
                     router.refresh()
-                  } catch {}
+                  } catch {
+                    // day regenerate failed
+                  }
                 }}
               />
             </motion.div>

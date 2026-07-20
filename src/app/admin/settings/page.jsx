@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { Save, Loader2 } from 'lucide-react'
 
 const AI_MODELS = [
-  { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Default)' },
-  { value: 'gemini-2.0-pro', label: 'Gemini 2.0 Pro (Fallback)' },
+  { value: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B (Default)' },
+  { value: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B (Fast)' },
 ]
 
 export default function AdminSettingsPage() {
@@ -15,7 +15,7 @@ export default function AdminSettingsPage() {
   const [toast, setToast] = useState(null)
   const [form, setForm] = useState({
     maintenanceMode: false,
-    aiModel: 'gemini-2.0-flash',
+    aiModel: 'llama-3.3-70b-versatile',
     rateLimit: 30,
     maxRetries: 2,
   })

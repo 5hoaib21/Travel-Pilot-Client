@@ -53,7 +53,7 @@ export default function BudgetTable({ budgetBreakdown }) {
               <div className="mt-1 flex flex-wrap gap-1">
                 {item.items.map((line, i) => (
                   <span key={i} className="text-[10px] text-[--text-secondary] bg-warm-50 dark:bg-slate-700/50 px-1.5 py-0.5 rounded">
-                    {line}
+                    {typeof line === 'string' ? line : `${line.name}${line.costPerNight != null ? ` : $${line.costPerNight}/night` : ''}${line.cost != null ? ` : $${line.cost}` : ''}`}
                   </span>
                 ))}
               </div>

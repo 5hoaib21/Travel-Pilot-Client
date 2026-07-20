@@ -17,9 +17,12 @@ export default function DayTimeline({ day, dayIndex, onRegenerateDay }) {
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl border border-warm-200 dark:border-slate-700 shadow-sm overflow-hidden">
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left"
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!open) } }}
+        className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer"
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
@@ -44,7 +47,7 @@ export default function DayTimeline({ day, dayIndex, onRegenerateDay }) {
             strokeWidth={1.5}
           />
         </div>
-      </button>
+      </div>
 
       <AnimatePresence initial={false}>
         {open && (
